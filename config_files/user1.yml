@@ -1,0 +1,13 @@
+user_id: 1
+
+user_tg_channel: one
+
+user_webs:
+  - https://ria.ru
+  - https://www.gazeta.ru/tech
+
+user_key_words:
+  - Россия
+
+user_stop_words:
+  - no
