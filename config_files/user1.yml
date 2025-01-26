@@ -4,7 +4,36 @@ user_tg_channel: one
 
 user_webs:
   - https://ria.ru
-  - https://www.gazeta.ru/tech
+  - https://www.gazeta.ru
+  - https://quote.ru/
+  - https://rbc.ru/
+  - https://www.autonews.ru
+  - https://www.interfax.ru
+  - https://www.consultant.ru
+  - https://www.naver.com
+  - https://www.yahoo.com
+  - https://www.forbes.ru
+  - https://www.kommersant.ru
+  - https://lenta.ru
+  - https://tass.ru
+  - https://dzen.ru/news/
+  - https://news.rambler.ru
+  - https://regnum.ru
+  - https://www.rosbalt.ru/
+  - https://russian.rt.com
+  - https://www.vesti.ru
+  - https://aif.ru/
+  - https://iz.ru/
+  - https://vz.ru-
+  - https://www.eg.ru
+  - https://life.ru/
+  - https://120.su
+  - https://report.az/ru/eto-interesno/
+  - https://agronews.com/by/ru/news/themes/867
+#  - https://www.bbc.com
+#  - https://people.com
+#  - https://thebell.io
+
 
 user_key_words:
   - Россия

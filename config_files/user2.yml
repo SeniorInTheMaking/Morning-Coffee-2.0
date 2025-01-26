@@ -3,8 +3,8 @@ user_id: 2
 user_tg_channel: two
 
 user_webs:
-  - https://www.forbes.ru
-  - https://positivnews.ru
+#  - https://www.forbes.ru
+#  - https://positivnews.ru
 
 user_key_words:
   - Сбер
