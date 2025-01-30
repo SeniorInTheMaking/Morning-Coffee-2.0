@@ -1,9 +1,8 @@
+from mysql.connector import connect
 import yaml
-import os
 
 
 class Load:
-
     def __init__(self):
         self.users_requests = []
         self.all_webs = []
@@ -13,32 +12,6 @@ class Load:
         self.prompt2 = None
         self.bot_token = None
         self.frequency = None
-
-    def get_users_requests(self, config_files_path):
-
-        yml_files = [file for file in os.listdir(config_files_path) if file.endswith('.yml')]
-
-        for yml_file in yml_files:
-            path = os.path.join(config_files_path, yml_file)
-            with open(path, 'r', encoding='utf-8') as file:
-                data = yaml.safe_load(file)
-
-            if data['user_id'] and data['user_tg_channel'] and data['user_webs'] and data['user_key_words']:
-                for web in data['user_webs']:
-                    if web not in self.all_webs:
-                        self.all_webs.append(web)
-
-                try:
-                    self.users_requests.append(
-                        {'user_id': data['user_id'],
-                         'user_tg_channel': data['user_tg_channel'],
-                         'user_webs': data['user_webs'],
-                         'user_key_words': data['user_key_words'],
-                         'user_stop_words': data['user_stop_words'],
-                         'user_urls_to_send': [],
-                         'user_sent_urls': []})
-                except:
-                    pass
 
     def get_keys(self, keys_path):
         with open(keys_path, 'r', encoding='utf-8') as file:
@@ -51,3 +24,28 @@ class Load:
             self.bot_token = keys_data['bot_token']
             self.frequency = keys_data['frequency']
 
+    def get_users_requests(self, database):
+        with connect(
+                host=database['host'],
+                port=database['port'],
+                user=database['user'],
+                password=database['password'],
+                database=database['database']
+        ) as connection:
+            with connection.cursor() as cursor:
+                request = "select id, tg_channel, news_limit, webs, key_words, stop_words, sent_urls, sent_titles from Users_table;"
+                cursor.execute(request)
+                result = cursor.fetchall()
+                result = [{'user_id': id,
+                           'user_tg_channel': channel,
+                           'user_news_limit': limit,
+                           'user_webs': webs.split(', '),
+                           'user_key_words': key_words.split(', '),
+                           'user_stop_words': stop_words.split(', '),
+                           'user_sent_urls': sent_urls.split(', '),
+                           'user_sent_titles': sent_titles.split(', ')}
+                          for (id, channel, limit, webs, key_words, stop_words, sent_urls, sent_titles) in result]
+                connection.commit()
+
+                self.users_requests = result
+                self.all_webs = list(set(web for user_request in result for web in user_request['user_webs']))
