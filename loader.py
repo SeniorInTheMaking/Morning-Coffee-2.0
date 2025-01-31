@@ -8,6 +8,7 @@ class Load:
         self.all_webs = []
         self.database = None
         self.api_key = None
+        self.model = None
         self.prompt1 = None
         self.prompt2 = None
         self.bot_token = None
@@ -19,6 +20,7 @@ class Load:
 
             self.database = keys_data['database']
             self.api_key = keys_data['api_key']
+            self.model = keys_data['model']
             self.prompt1 = keys_data['prompt1']
             self.prompt2 = keys_data['prompt2']
             self.bot_token = keys_data['bot_token']
@@ -46,6 +48,5 @@ class Load:
                            'user_sent_titles': sent_titles.split(', ')}
                           for (id, channel, limit, webs, key_words, stop_words, sent_urls, sent_titles) in result]
                 connection.commit()
-
                 self.users_requests = result
                 self.all_webs = list(set(web for user_request in result for web in user_request['user_webs']))

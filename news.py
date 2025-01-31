@@ -134,3 +134,11 @@ class News():
             except:
                 logs.write_log(self.url, "Can't upload new url")
 
+def db_maintenance(database):
+    request = "DELETE FROM NS_table WHERE DownloadTime < NOW() - INTERVAL 50 DAY;"
+    access_database(database, request)
+
+    request = "update NS_table set Status = 'copy' WHERE id NOT IN (SELECT min_id FROM (SELECT MIN(id) AS min_id FROM NS_table GROUP BY Title) AS temp);"
+    access_database(database, request)
+
+
