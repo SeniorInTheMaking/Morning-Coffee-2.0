@@ -2,8 +2,10 @@ import loader
 import news
 import users
 
+
 data = loader.Load()
-data.get_keys('keys.yml')
+# data.get_keys('keys.yml')
+data.get_keys('/app/config_files/keys.yml')
 data.get_users_requests(data.database)
 
 for web in data.all_webs:
@@ -21,3 +23,5 @@ for request in data.users_requests:
     request.detect_interesting_articles(data.database, data.api_key, data.model, data.prompt1, data.prompt2,
                                         data.bot_token)
     request.update_sent_urls(data.database)
+
+news.db_maintenance(data.database)

@@ -111,8 +111,9 @@ class Users:
         self.user_sent_titles = user_sent_titles
 
     def detect_interesting_articles(self, database, api_key, model, prompt1, prompt2, bot_token):
-        webs_for_request = f"({', '.join([f"'{web.split('/')[2]}'" for web in self.user_webs])})"
-        request = f"select id, Web, URL, Title, Content, Summary, status from NS_table where Status in ('downloaded', 'summarized') and Web in {webs_for_request} and DownloadTime > NOW() - INTERVAL 1 DAY;"
+        # webs_for_request = f"""({', '.join([f"'{web.split('/')[2]}'" for web in self.user_webs])})"""
+        webs_for_request = ', '.join([f"'{web.split('/')[2]}'" for web in self.user_webs])
+        request = f"select id, Web, URL, Title, Content, Summary, status from NS_table where Status in ('downloaded', 'summarized') and Web in ({webs_for_request}) and DownloadTime > NOW() - INTERVAL 1 DAY;"
         all_articles = access_database(database, request)
 
         sent_news_count = 0
@@ -153,6 +154,7 @@ class Users:
                 self.user_sent_urls.append(str(article.id))
 
     def update_sent_urls(self, database):
-        sent_urls_for_request = f"{', '.join([f"{url}" for url in self.user_sent_urls])}"
+        # sent_urls_for_request = f"{', '.join([f"{url}" for url in self.user_sent_urls])}"
+        sent_urls_for_request = ', '.join([f"{str(url)}" for url in self.user_sent_urls])
         request = f'update Users_table set sent_urls = "{sent_urls_for_request}" where id = "{self.user_id}"'
         access_database(database, request)
